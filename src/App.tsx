@@ -1,13 +1,14 @@
 import FiltersBox from './components/FiltersBox'
 import ProductsTable from './components/ProductsTable'
+import Layout from './components/Layout'
 import './App.css'
 
 const App = () => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%' }}>
-      <FiltersBox />
+    <Layout>
+      <FiltersBox isSearchEnable={false} />
       <ProductsTable />
-    </div>
+    </Layout>
   )
 }
 

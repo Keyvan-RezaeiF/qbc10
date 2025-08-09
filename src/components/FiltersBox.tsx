@@ -1,14 +1,26 @@
-const FiltersBox = () => {
+interface FiltersBoxProps {
+  isSearchEnable: boolean
+}
+
+const FiltersBox = (props: FiltersBoxProps) => {
+  const { isSearchEnable = true } = props
+
   return (
     <div>
-      <input
-        type="text"
-        style={{
-          display: 'block',
-          marginBottom: 4,
-        }}
-        placeholder='Search ...'
-      />
+      {isSearchEnable ? (
+        <input
+          type="text"
+          style={{
+            display: 'block',
+            marginBottom: 4,
+          }}
+          placeholder='Search ...'
+        />
+      ) : (
+        <p style={{ marginBottom: 8 }}>
+          Search feature is not enable now!
+        </p>
+      )}
       <div>
         <input
           type="checkbox"
