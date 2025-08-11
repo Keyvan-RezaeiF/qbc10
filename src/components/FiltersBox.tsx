@@ -1,13 +1,16 @@
-interface FiltersBoxProps {
-  isSearchEnable: boolean
-}
+import { useState } from "react"
 
-const FiltersBox = (props: FiltersBoxProps) => {
-  const { isSearchEnable = true } = props
+const FiltersBox = () => {
+  const [showSearchBox, setShowSearchBox] = useState(false)
+
+  const handleClick = () => {
+    setShowSearchBox(!showSearchBox)
+  }
 
   return (
     <div>
-      {isSearchEnable ? (
+      <button onClick={handleClick}>Toggle Search Box</button>
+      {showSearchBox && (
         <input
           type="text"
           style={{
@@ -16,10 +19,6 @@ const FiltersBox = (props: FiltersBoxProps) => {
           }}
           placeholder='Search ...'
         />
-      ) : (
-        <p style={{ marginBottom: 8 }}>
-          Search feature is not enable now!
-        </p>
       )}
       <div>
         <input

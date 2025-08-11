@@ -1,3 +1,5 @@
+import Counter from "./Counter"
+
 interface ProductRowProps {
   title: string
   price: number
@@ -14,6 +16,7 @@ const ProductRow = (props: ProductRowProps) => {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: 250 }}>
       <span>{title}</span>
       <span>${price}</span>
+      <Counter />
     </div>
   )
 }
