@@ -1,8 +1,12 @@
 import ProductCategory from "./ProductCategory"
 import ProductRow from "./ProductRow"
 import { fruits, vegetables } from "../constants/products"
+import AlertButton from "./AlertButton"
+import useTime from "../hooks/useTime"
 
 const ProductsTable = () => {
+  const { time, handleStart, handleReset } = useTime()
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 8, marginTop: 20 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: 250 }}>
@@ -27,6 +31,9 @@ const ProductsTable = () => {
           />
         ))}
       </div>
+      <span>{time}</span>
+      <AlertButton onClick={handleStart}>Start</AlertButton>
+      <AlertButton onClick={handleReset}>Reset</AlertButton>
     </div>
   )
 }
