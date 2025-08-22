@@ -1,7 +1,17 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const FiltersBox = () => {
-  const [showSearchBox, setShowSearchBox] = useState(false)
+  const [showSearchBox, setShowSearchBox] = useState(true)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+
+  // inputRef.current?.focus() --- IGNORE ---
+
+  useEffect(() => {
+    if (!inputRef.current) return
+
+    inputRef.current?.focus()
+  }, [])
 
   const handleClick = () => {
     setShowSearchBox(!showSearchBox)
@@ -17,6 +27,7 @@ const FiltersBox = () => {
             display: 'block',
             marginBottom: 4,
           }}
+          ref={inputRef}
           placeholder='Search ...'
         />
       )}

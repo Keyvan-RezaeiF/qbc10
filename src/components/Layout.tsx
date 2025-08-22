@@ -10,7 +10,7 @@ const Layout = (props: LayoutProps) => {
   } = props
 
   return (
-    <div style={{ height: '100vh', display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%' }}>
+    <div style={{  display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%' }}>
       <nav style={{ position: 'absolute', top: 0 }}>Navbar</nav>
       {children}
       {hasFooter && (
