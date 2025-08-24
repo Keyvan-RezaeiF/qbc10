@@ -1,20 +1,21 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const Counter = () => {
-  // let [count, setCount] = useState(0)
-  const count = useRef(0)
-  console.log(count.current)
+  let [count, setCount] = useState(0)
+  // const count = useRef(0)
+
+  useEffect(() => {
+    console.log('Count changed:', count)
+  }, [count])
 
   const handleMinus = () => {
-    if (count.current === 0) return
+    if (count === 0) return
 
-    // setCount(count - 1) // cause re-rendering
-    count.current = count.current - 1
+    setCount(count - 1) // cause re-rendering
   }
 
   const handlePlus = () => {
-    // setCount(count + 1) // cause re-rendering
-    count.current = count.current + 1
+    setCount(count + 1) // cause re-rendering
   }
 
   return (
@@ -25,7 +26,7 @@ const Counter = () => {
       >
         -
       </button>
-      <span style={{ margin: '0 8px' }}>{count.current}</span>
+      <span style={{ margin: '0 8px' }}>{count}</span>
       <button
         style={{ width: 24, height: 24 }}
         onClick={handlePlus}

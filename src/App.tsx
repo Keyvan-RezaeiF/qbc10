@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import FiltersBox from './components/FiltersBox'
 import ProductsTable from './components/ProductsTable'
 import Layout from './components/Layout'

@@ -4,9 +4,6 @@ const FiltersBox = () => {
   const [showSearchBox, setShowSearchBox] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
 
-
-  // inputRef.current?.focus() --- IGNORE ---
-
   useEffect(() => {
     if (!inputRef.current) return
 
@@ -14,7 +11,7 @@ const FiltersBox = () => {
   }, [])
 
   const handleClick = () => {
-    setShowSearchBox(!showSearchBox)
+    setShowSearchBox(prev => !prev)
   }
 
   return (
