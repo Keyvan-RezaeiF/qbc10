@@ -1,3 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-primary: #1e40af;
+  --color-secondary: #2563eb;
+  --color-accent: #10b981;
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-error: #ef4444;
+
+    /* Viewport Breakpoints */
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1600px;
+  --breakpoint-4xl: 1920px;
+}
+
+@layer components {
+  .product-category {
+    @apply flex items-center flex-col gap-1
+  }
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  .text-accent {
+    color: var(--color-accent);
+  }
+  .text-error {
+    color: var(--color-error);
+  }
+  .bg-background {
+    background-color: var(--color-background);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+}
+
 * {
   margin: 0;
   padding: 0;

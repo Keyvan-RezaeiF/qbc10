@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import classes from './styles.module.css'
 
 const FiltersBox = () => {
   const [showSearchBox, setShowSearchBox] = useState(true)
@@ -20,10 +21,7 @@ const FiltersBox = () => {
       {showSearchBox && (
         <input
           type="text"
-          style={{
-            display: 'block',
-            marginBottom: 4,
-          }}
+          className='block mb-1'
           ref={inputRef}
           placeholder='Search ...'
         />
@@ -33,7 +31,7 @@ const FiltersBox = () => {
           type="checkbox"
           name="products"
           id="products"
-          style={{ marginRight: 4 }}
+          className='mr-1'
         />
         <label htmlFor="products">
           Only show products in stock

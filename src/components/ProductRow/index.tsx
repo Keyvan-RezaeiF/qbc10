@@ -1,4 +1,5 @@
-import Counter from "./Counter"
+import Counter from "../Counter"
+import classes from './styles.module.css'
 
 interface ProductRowProps {
   title: string
@@ -13,7 +14,7 @@ const ProductRow = (props: ProductRowProps) => {
   } = props
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: 250 }}>
+    <div className={classes.row}>
       <span>{title}</span>
       <span>${price}</span>
       <Counter />

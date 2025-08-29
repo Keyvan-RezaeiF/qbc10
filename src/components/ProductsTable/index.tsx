@@ -1,19 +1,20 @@
-import ProductCategory from "./ProductCategory"
-import ProductRow from "./ProductRow"
-import { fruits, vegetables } from "../constants/products"
-import AlertButton from "./AlertButton"
-import useTime from "../hooks/useTime"
+import ProductCategory from "../ProductCategory"
+import ProductRow from "../ProductRow"
+import { fruits, vegetables } from "../../constants/products"
+import AlertButton from "../AlertButton"
+import useTime from "../../hooks/useTime"
+import classes from './styles.module.css'
 
 const ProductsTable = () => {
   const { time, handleStart, handleReset } = useTime()
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 8, marginTop: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: 250 }}>
+    <div className='flex items-center flex-col gap-2 mt-5'>
+      <div className='flex items-center justify-between w-[250px]'>
         <span>Name</span>
         <span>Price</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 4 }}>
+      <div className='product-category'>
         <ProductCategory title='Fruits' />
         {fruits.map(fruit => (
           <ProductRow
@@ -22,7 +23,7 @@ const ProductsTable = () => {
           />
         ))}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 4 }}>
+      <div className='product-category'>
         <ProductCategory title='Vegetables' />
         {vegetables.map(vegetable => (
           <ProductRow

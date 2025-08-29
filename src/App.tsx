@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <Layout>
-      <span>{time}</span>
+      <span className='text-primary md:text-emerald-600 lg:text-error'>{time}</span>
       <AlertButton onClick={handleStart}>Start</AlertButton>
       <AlertButton onClick={handleReset}>Reset</AlertButton>
       <br />

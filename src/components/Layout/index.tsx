@@ -1,3 +1,5 @@
+import classes from './styles.module.css'
+
 interface LayoutProps {
   children: React.ReactNode
   hasFooter?: boolean
@@ -10,11 +12,11 @@ const Layout = (props: LayoutProps) => {
   } = props
 
   return (
-    <div style={{ height: '100vh', display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%' }}>
-      <nav style={{ position: 'absolute', top: 0 }}>Navbar</nav>
+    <div className={classes.layout}>
+      <nav className={classes.nav}>Navbar</nav>
       {children}
       {hasFooter && (
-        <footer style={{ position: 'absolute', bottom: 0 }}>
+        <footer className={classes.footer}>
           Footer
         </footer>
       )}

@@ -1,0 +1,16 @@
+.button {
+  background-color: green;
+  width: 24px;
+  height: 24px;
+}
+
+.count {
+  margin: 0 8px;
+}
+
+.disabledButton {
+  opacity: 0.2;
+  background-color: green;
+  width: 24px;
+  height: 24px;
+}
