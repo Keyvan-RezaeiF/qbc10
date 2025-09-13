@@ -1,6 +1,15 @@
 import { useState } from 'react'
+import * as z from "zod";
 import './App.css'
 import styles from "./styles.module.css"
+
+const formDataSchema = z.object({
+  name: z.string().min(3, { error: "Name must be at least 3 characters long" }).max(20, { error: "Name must be at most 20 characters long" }),
+  email: z.email({ error: "Invalid email address" }),
+  subject: z.enum(['general', 'support', 'sales', 'partnership', 'feedback'], { error: "Please select a valid subject" }),
+  priority: z.enum(['low', 'medium', 'high'], { error: "Please select a priority level" }),
+  message: z.string().max(500, { error: "Message must be at most 500 characters long" }).optional(),
+});
 
 const App = () => {
   const [name, setName] = useState('')
@@ -8,6 +17,7 @@ const App = () => {
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
   const [selectedPriority, setSelectedPriority] = useState('')
+  const [error, setError] = useState<string>('')
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
@@ -43,12 +53,44 @@ const App = () => {
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault() // Prevent default form submission behavior
 
-    console.log('Form submitted:', { name, email, subject, message, selectedPriority })
+    const formData = { name, email, subject, message, priority: selectedPriority }
+    console.log('formData', formData)
+
+    // const parseResult = formDataSchema.safeParse(formData)
+    try {
+      const parseResult = formDataSchema.parse(formData)
+      console.log('parseResult', parseResult)
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.issues?.[0]?.message)
+        // const pretty = z.prettifyError(err);
+        // console.log(pretty)
+        // console.log('Validation errors:', err.errors);
+        // setError(err.errors.map(e => e.message).join(', '))
+        return
+      }
+      console.log('Unexpected error', err)
+      setError('An unexpected error occurred')
+      return
+    }
+
+
+    // if (name.length < 3 || name.length > 20) return setError('Name must be between 3 and 20 characters')
+
+    // if (!email.includes('@') || !email.includes('.')) return setError('Please enter a valid email address')
+
+    // if (['general', 'support', ''].includes(subject)) return setError('Please select a subject')
+
+    // if (selectedPriority === '') return setError('Please select a priority level')
+
+    // if ( message.length > 500) return setError('Message must be more than 500 characters')
 
     setName('')
     setEmail('')
     setSubject('')
     setMessage('')
+    setSelectedPriority('')
+    setError('')
   }
 
   return (
@@ -58,6 +100,7 @@ const App = () => {
           <div className={styles.contactGrid}>
             <div className={styles.contactFormSection}>
               <h2>Send us a Message</h2>
+              {error && <p className={styles.errorText}>{error}</p>}
               <form
                 onSubmit={submitForm}
                 className={styles.contactForm}
@@ -70,19 +113,19 @@ const App = () => {
                     name="name"
                     value={name}
                     onChange={handleNameChange}
-                    required
+                    // required
                     placeholder="Enter your full name"
                   />
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="email">Email Address *</label>
                   <input
-                    type="email"
+                    type="text"
                     id="email"
                     name="email"
                     value={email}
                     onChange={handleEmailChange}
-                    required
+                    // required
                     placeholder="Enter your email address"
                   />
                 </div>
@@ -91,7 +134,7 @@ const App = () => {
                   <select
                     id="subject"
                     name="subject"
-                    required
+                    // required
                     value={subject}
                     onChange={handleSubjectChange}
                   >
@@ -139,11 +182,11 @@ const App = () => {
                   </div>
                 </div>
                 <div className={styles.formGroup}>
-                  <label htmlFor="message">Message *</label>
+                  <label htmlFor="message">Message</label>
                   <textarea
                     id="message"
                     name="message"
-                    required
+                    // required
                     value={message}
                     onChange={handleMessageChange}
                     rows={6}

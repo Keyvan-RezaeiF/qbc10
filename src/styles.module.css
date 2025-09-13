@@ -105,3 +105,10 @@
   justify-content: center;
   gap: 20px;
 }
+
+.errorText {
+  color: #ff0000;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+}
