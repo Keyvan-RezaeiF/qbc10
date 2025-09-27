@@ -1,76 +1,47 @@
-import { useState, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import Layout from './components/Layout'
 import AlertButton from './components/AlertButton'
+import SearchBox from './components/SearchBox'
 import './App.css'
 
-type Item = {
-  id: number
-  isSelected: boolean
+const shiftUsers = (array: User[]) => {
+  return array.slice(1).concat(array.slice(0, 1))
 }
 
-const initialItems = new Array(29_999_999).fill(0).map((_, index) => ({
-  id: index,
-  isSelected: index === 29_999_998,
-}))
+type User = {
+  id: number
+  name: string
+}
+
+const allUsers = [
+  { id: 1, name: 'John' },
+  { id: 2, name: 'Jane' },
+  { id: 3, name: 'Jim' },
+]
 
 const App = () => {
-  const [count, setCount] = useState<number>(0)
-  const [items] = useState<Item[]>(initialItems)
+  const [users, setUsers] = useState<User[]>(allUsers)
 
-  const selectedItem = useMemo(() => {
-    console.log('Calculating selected item...')
-    return items.find(item => item.isSelected)
-  }, [items])
+  const handleSearch = useCallback((text: string) => {
+    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(text.toLowerCase()))
+    setUsers(filteredUsers)
+  }, [])
+
+  console.log('re-render App')
 
   return (
     <Layout>
-      <h1>Counter: {count}</h1>
-      <h1>Selected Item: {selectedItem?.id}</h1>
-      <AlertButton onClick={() => setCount(count + 1)}>
-        Increment
+      <AlertButton onClick={() => setUsers(prev => shiftUsers(prev))}>
+        Shuffle
       </AlertButton>
+      <SearchBox onChange={handleSearch} />
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
     </Layout>
   )
 }
 
 export default App
-
-
-// import { useMemo, useState } from 'react'
-// import Layout from './components/Layout'
-// import AlertButton from './components/AlertButton'
-// import './App.css'
-
-// const App = () => {
-//   const [number, setNumber] = useState<number>(0)
-//   const [dark, setDark] = useState<boolean>(false)
-//   const themeStyles = {
-//     backgroundColor: dark ? 'black' : 'white',
-//     color: dark ? 'white' : 'black',
-//   }
-
-//   const doubleNumber = useMemo(() => slowFunction(number), [number])
-
-//   return (
-//     <Layout>
-//       <input
-//         type="number"
-//         value={number}
-//         onChange={e => setNumber(parseInt(e.target.value))}
-//         className='text-center'
-//       />
-//       <AlertButton onClick={() => setDark(prev => !prev)}>
-//         Change Theme
-//       </AlertButton>
-//       <div style={themeStyles}>{doubleNumber}</div>
-//     </Layout>
-//   )
-// }
-
-// const slowFunction = (number: number) => {
-//   console.log('Calculating...')
-//   for (let i = 0; i < 1000000000; i++) { }
-//   return number * 2
-// }
-
-// export default App
