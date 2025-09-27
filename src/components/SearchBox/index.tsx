@@ -5,8 +5,6 @@ interface SearchBoxProps {
 }
 
 const SearchBox = ({ onChange }: SearchBoxProps) => {
-  console.log('re-render SearchBox')
-
   return (
     <input
       type='text'

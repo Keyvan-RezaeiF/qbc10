@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import Layout from './components/Layout'
 import AlertButton from './components/AlertButton'
 import SearchBox from './components/SearchBox'
+import withEnhancement from './hocs/withEnhancement'
+import withWidth from './hocs/withWidth'
 import './App.css'
 
 const shiftUsers = (array: User[]) => {
@@ -27,20 +29,21 @@ const App = () => {
     setUsers(filteredUsers)
   }, [])
 
-  console.log('re-render App')
+  const EnhancedAlertButton = withEnhancement(AlertButton)
+  const EnhancedLayout = withWidth(Layout)
 
   return (
-    <Layout>
-      <AlertButton onClick={() => setUsers(prev => shiftUsers(prev))}>
+    <EnhancedLayout>
+      <EnhancedAlertButton onClick={() => setUsers(prev => shiftUsers(prev))}>
         Shuffle
-      </AlertButton>
+      </EnhancedAlertButton>
       <SearchBox onChange={handleSearch} />
       <ul>
         {users.map(user => (
           <li key={user.id}>{user.name}</li>
         ))}
       </ul>
-    </Layout>
+    </EnhancedLayout>
   )
 }
 
