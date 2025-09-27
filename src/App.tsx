@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod";
 import './App.css'
 import styles from "./styles.module.css"
@@ -11,86 +13,21 @@ const formDataSchema = z.object({
   message: z.string().max(500, { error: "Message must be at most 500 characters long" }).optional(),
 });
 
+type FromData = z.infer<typeof formDataSchema>
+
 const App = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [subject, setSubject] = useState('')
-  const [message, setMessage] = useState('')
-  const [selectedPriority, setSelectedPriority] = useState('')
-  const [error, setError] = useState<string>('')
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FromData>({
+    resolver: zodResolver(formDataSchema),
+  })
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-
-  const handleSubjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSubject(e.target.value)
-  }
-
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value)
-  }
-
-  const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedPriority(e.target.value)
-  }
-
-  // const submitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault()
-
-  //   console.log('Form submitted:', { name, email, subject, message })
-
-  //   setName('')
-  //   setEmail('')
-  //   setSubject('')
-  //   setMessage('')
-  // }
-
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault() // Prevent default form submission behavior
-
-    const formData = { name, email, subject, message, priority: selectedPriority }
-    console.log('formData', formData)
-
-    // const parseResult = formDataSchema.safeParse(formData)
-    try {
-      const parseResult = formDataSchema.parse(formData)
-      console.log('parseResult', parseResult)
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.issues?.[0]?.message)
-        // const pretty = z.prettifyError(err);
-        // console.log(pretty)
-        // console.log('Validation errors:', err.errors);
-        // setError(err.errors.map(e => e.message).join(', '))
-        return
-      }
-      console.log('Unexpected error', err)
-      setError('An unexpected error occurred')
-      return
-    }
-
-
-    // if (name.length < 3 || name.length > 20) return setError('Name must be between 3 and 20 characters')
-
-    // if (!email.includes('@') || !email.includes('.')) return setError('Please enter a valid email address')
-
-    // if (['general', 'support', ''].includes(subject)) return setError('Please select a subject')
-
-    // if (selectedPriority === '') return setError('Please select a priority level')
-
-    // if ( message.length > 500) return setError('Message must be more than 500 characters')
-
-    setName('')
-    setEmail('')
-    setSubject('')
-    setMessage('')
-    setSelectedPriority('')
-    setError('')
+  const onSubmit = (data: FromData) => {
+    console.log('Form submitted successfully:', data)
+    reset()
   }
 
   return (
@@ -100,9 +37,8 @@ const App = () => {
           <div className={styles.contactGrid}>
             <div className={styles.contactFormSection}>
               <h2>Send us a Message</h2>
-              {error && <p className={styles.errorText}>{error}</p>}
               <form
-                onSubmit={submitForm}
+                onSubmit={handleSubmit(onSubmit)}
                 className={styles.contactForm}
               >
                 <div className={styles.formGroup}>
@@ -110,33 +46,26 @@ const App = () => {
                   <input
                     type="text"
                     id="name"
-                    name="name"
-                    value={name}
-                    onChange={handleNameChange}
-                    // required
                     placeholder="Enter your full name"
+                    {...register('name')}
                   />
+                  {errors.name && <p className={styles.errorText}>{errors.name.message}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="email">Email Address *</label>
                   <input
                     type="text"
                     id="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    // required
                     placeholder="Enter your email address"
+                    {...register('email')}
                   />
+                  {errors.email && <p className={styles.errorText}>{errors.email.message}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="subject">Subject *</label>
                   <select
                     id="subject"
-                    name="subject"
-                    // required
-                    value={subject}
-                    onChange={handleSubjectChange}
+                    {...register('subject')}
                   >
                     <option value="">Select a subject</option>
                     <option value="general">General Inquiry</option>
@@ -145,6 +74,7 @@ const App = () => {
                     <option value="partnership">Partnership</option>
                     <option value="feedback">Feedback</option>
                   </select>
+                  {errors.subject && <p className={styles.errorText}>{errors.subject.message}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Priority Level *</label>
@@ -152,51 +82,43 @@ const App = () => {
                     <label className={styles.radioLabel}>
                       <input
                         type="radio"
-                        name="priority"
                         value="low"
-                        checked={selectedPriority === 'low'}
-                        onChange={handlePriorityChange}
+                        {...register('priority')}
                       />
                       Low
                     </label>
                     <label className={styles.radioLabel}>
                       <input
                         type="radio"
-                        name="priority"
                         value="medium"
-                        checked={selectedPriority === 'medium'}
-                        onChange={handlePriorityChange}
+                        {...register('priority')}
                       />
                       Medium
                     </label>
                     <label className={styles.radioLabel}>
                       <input
                         type="radio"
-                        name="priority"
                         value="high"
-                        checked={selectedPriority === 'high'}
-                        onChange={handlePriorityChange}
+                        {...register('priority')}
                       />
                       High
                     </label>
                   </div>
+                  {errors.priority && <p className={styles.errorText}>{errors.priority.message}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="message">Message</label>
                   <textarea
                     id="message"
-                    name="message"
-                    // required
-                    value={message}
-                    onChange={handleMessageChange}
                     rows={6}
                     placeholder="Tell us how we can help you..."
+                    {...register('message')}
                   ></textarea>
+                  {errors.message && <p className={styles.errorText}>{errors.message.message}</p>}
                 </div>
                 <button
                   type="submit"
                   className={`${styles.btn} ${styles.btnPrimary}`}
-                // onClick={submitForm}
                 >
                   Send Message
                 </button>
